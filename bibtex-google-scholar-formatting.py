@@ -34,15 +34,15 @@ if __name__=="__main__":
     #open selenium, log to overleaf, find the .bib file, get the file
     if session_type.lower().strip()=="overleaf":
         #login inp
-        email= input("Overleaf email: ") #"f.dicursi@studenti.unipi.it"
+        email= input("Overleaf email: ") 
         password= getpass.getpass("Overleaf password: ")
 
         #search for document
-        doc_name= input("Overleaf project name: ") #"Research Proposal (CS) (BACKUP)" 
+        doc_name= input("Overleaf project name: ") 
 
         print("\nWARNING: the .bib file must be in the root directory of the Overleaf project in order to work.")
         print("\tBefore proceeding, make sure that the .bib on Overleaf is in the correct location.\n")
-        bib_path= input("Bib file name on Overleaf (.bib included): ")#"Bibliography.bib" #input
+        bib_path= input("Bib file name on Overleaf (.bib included): ")
         print("\n")
         #take the text from .bib
         #consider only scientific plublications
