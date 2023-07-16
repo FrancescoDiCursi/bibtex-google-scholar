@@ -29,10 +29,9 @@ ______
 
 So <ins>**if you have a really long bibliography then you should stay close to the PC, doing CAPTCHAs when needed**</ins> (the longest the saddest). 
 
-Despite this, don't worry about time: the script is conceived to wait (up to 1 day circa) in points in which CAPTCHAs appear and to perform a bit slowler than humans (in order not to be blocked).
+Despite this, **don't worry about time**: the script is conceived to wait (up to 1 day circa) in points in which CAPTCHAs appear and to perform a bit slowler than humans (in order not to be blocked).
 
-Given this, if you need an instant
-aneous formatter, good luck in your search. 
+Given this, if you need an instantaneous formatter, good luck in your search and contact me if you find it 😎 
 ______
 :exclamation: REQUIREMENTS
 
