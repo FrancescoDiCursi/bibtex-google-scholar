@@ -1,7 +1,7 @@
 # bibtex-google-scholar-formatting
 
 
-:warning: REQUIREMENTS
+:exclamation: REQUIREMENTS
 
 In order to run the script you need to install the following libraries:
  - selenium==4.10.0
@@ -17,4 +17,17 @@ Before proceeding, if you want to use a local file, make sure that the file that
 
 Download the zip and extract the folder.
 
-Once you have installed all the needed libraries (along with the ChromeDriver), just open the terminal in that folder and run the following command:  `python bibtex-google-scholar-formatting.py`
+Open the terminal in that folder and, once you have installed all the needed libraries (along with the ChromeDriver), just run the following command:  `python bibtex-google-scholar-formatting.py`
+
+Follow the questions according to your need and be carefull to insert the correct answers, otherwise the script will crash.
+______
+⚠️ REMIND
+
+Services hate automation, also the ethic one. <sub>(When it is done by others of course 😏)</sub>
+
+So if you have a really long bibliography then you should stay close to the PC, doing CAPTCHAs when needed (the longest the saddest). 
+
+Despite this, don't worry about time: the script is conceived to wait (up to 1 day circa) in points in which CAPTCHAs appear and to perform a bit slowler than humans (in order not to be blocked).
+
+Given this, if you need an instantaneous formatter, good luck in your search. 
+
