@@ -57,11 +57,11 @@ ______
 
 # Logic diagram
 Legend:
-- normal nodes are questions
-- circular node is a process
-- rhombus is a manual process
-- square node is a file
-- links are answers
-- dashed link is a possibility
+- NORMAL nodes = questions
+- CIRCULAR node = process
+- RHOMBUS node= manual process
+- SQUARE node = file
+- LINKS = answers
+- DASHED LINK = possibility
 
 ![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar-formatting/blob/main/code%20diagram.svg)
