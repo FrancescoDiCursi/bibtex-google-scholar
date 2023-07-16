@@ -1,6 +1,24 @@
 # bibtex-google-scholar-formatting
 
 
+You can either:
+
+- Take your hill formatted .bib file from Overleaf (personalizing the bibTeX tags you need
+- Take a local file, either a:
+  + .bib file (as in the overleaf case)
+  + .txt file: a list on whose each lines contains the title along with the authors in the following syntax:
+
+   ```
+   title1;author1.1;author1.2;...
+   
+   title2;author2.1;...
+
+   ...
+   ```
+- Search and retrieve the correct bibTeX citations from Google Scholar.
+
+
+______
 :exclamation: REQUIREMENTS
 
 In order to run the script you need to install the following libraries:
@@ -13,7 +31,7 @@ You will also need the correct ChromeDriver according to your Chrome version, [s
 ______
 :question: HOW TO USE IT:
 
-Before proceeding, if you want to use a local file, make sure that the file that you want to format is in the "local input files" folder.
+Before proceeding, if you want to use a local file, make sure that the file that you need to format is in the "local input files" folder.
 
 Download the zip and extract the folder.
 
@@ -29,5 +47,6 @@ So if you have a really long bibliography then you should stay close to the PC, 
 
 Despite this, don't worry about time: the script is conceived to wait (up to 1 day circa) in points in which CAPTCHAs appear and to perform a bit slowler than humans (in order not to be blocked).
 
-Given this, if you need an instantaneous formatter, good luck in your search. 
+Given this, if you need an instant
+aneous formatter, good luck in your search. 
 
