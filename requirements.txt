@@ -1,0 +1,4 @@
+pywin32==228
+pywin32-ctypes @ file:///C:/ci/pywin32-ctypes_1607553594546/work
+selenium==4.10.0
+tqdm==4.65.0
