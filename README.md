@@ -53,4 +53,15 @@ Open the terminal in that folder and, once you have installed all the needed lib
 
 Follow the questions according to your need and be carefull to insert the correct answers, otherwise the script will crash.
 
+______
 
+# Logic diagram
+Legend:
+- normal nodes are questions
+- circular node is a process
+- rhombus is a manual process
+- square node is a file
+- links are answers
+- dashed link is a possibility
+
+![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar-formatting/blob/main/code%20diagram.svg)
