@@ -4,9 +4,9 @@
 :warning: REQUIREMENTS
 
 In order to run the script you need to install the following libraries:
- - selenium
- - pywin32
- - tqdm
+ - selenium==4.10.0
+ - pywin32==228
+ - tqdm==4.65.0
    
 You will also need the correct ChromeDriver according to your Chrome version, [see the tutorial](https://sites.google.com/a/chromium.org/chromedriver/getting-started) (Getting started > Setup)
 
