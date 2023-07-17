@@ -1,4 +1,4 @@
-# bibtex-google-scholar-formatting
+# bibtex-google-scholar
 
 💫 DESCRIPTION
 
