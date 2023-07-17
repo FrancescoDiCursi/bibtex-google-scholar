@@ -59,7 +59,7 @@ Legend:
 - CIRCULAR node = process
 - RHOMBUS node= manual process
 - SQUARE node = file
-- LINKS = answers
+- LINK LABLES = answers
 - DASHED LINK = possibility
 
 ![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar-formatting/blob/main/code%20diagram.svg)
