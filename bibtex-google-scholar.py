@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
+
+# In[1]:
+
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -18,19 +22,19 @@ from collections import Counter
 import win32clipboard
 
 
-# In[21]:
+# In[11]:
 
 
 def get_bib_text_to_change(bib_text, target_bib_el):
-    bib_text=[x for x in bib_text.split("@") if not re.match("\d+",x)]
+    bib_text=[x for x in bib_text.split("@") if not re.match("\d+",x) if x!=""]
     bib_text_to_change=[x for x in bib_text if x.startswith(tuple(target_bib_el))]
     if bib_text_to_change==[]:
         return print(f"WARNING: none of {target_bib_el} in bib file! Retry again adding the needed bib tags.")
     bib_text_untouched_els=[ x for x in bib_text if not x.startswith(tuple(target_bib_el))]
 
-    titles_to_change=[x.split("title = {")[1].split("}")[0].replace("\n"," ") for x in bib_text_to_change]
-    authors_to_change=[x.split("author = {")[1].split("}")[0].replace("{","").replace("\&",",").replace("\\","").replace("\n"," ") for x in bib_text_to_change]
-    type_el_to_change=[x.split("@")[0].split("{")[1].split(",")[0].strip().replace("\n"," ") for x in bib_text_to_change] #[x.split("@")[0].split("{")[-1].replace("\n","") for x in bib_text_to_change]
+    titles_to_change=[re.split("title\s*=\s*{", x)[1].split("}")[0].replace("\n"," ") for x in bib_text_to_change if x!=""]
+    authors_to_change=[re.split("author\s*=\s*{", x)[1].split("}")[0].replace("{","").replace("\&",",").replace("\\","").replace("\n"," ") for x in bib_text_to_change if x!=""]
+    type_el_to_change=[x.split("@")[0].split("{")[1].split(",")[0].strip().replace("\n"," ") for x in bib_text_to_change if x!=""] #[x.split("@")[0].split("{")[-1].replace("\n","") for x in bib_text_to_change]
     
     return titles_to_change, authors_to_change, type_el_to_change, bib_text_to_change, bib_text_untouched_els
 
@@ -106,23 +110,25 @@ def google_scholar_search(driver, titles_to_change, authors_to_change, action, t
         
     return google_formatted_cits
 
-def save_results(google_formatted_cits, bib_path, bib_text_untouched_els=[]):
+def save_results(google_formatted_cits, bib_path, doc_name="", bib_text_untouched_els=[]):
      #save these cits to new .bib file
     results= "\n".join(google_formatted_cits.values())
+    if doc_name!="":
+        doc_name+="_"
+        
     os.makedirs("./results/",exist_ok=True)
-    with open("./results/"+bib_path.split("\\")[-1].replace(".txt",".bib"),"w", encoding="utf-8") as file:
+    with open("./results/"+f"{doc_name}"+bib_path.split("\\")[-1].replace(".txt",".bib"),"w", encoding="utf-8") as file:
         if len(bib_text_untouched_els)>0: #if targetting an old bib tex file
             final_file= "\n@".join([results,"\n@".join(bib_text_untouched_els)])  #modified entris + untouched ones (e.g. @online, @misc, ...)
         elif len(bib_text_untouched_els)==0:#if targetting a txt file (no old text to retain, it is only a list)
             final_file=results
         file.write(final_file)
-    print("File succesfully saved in: ./results/"+bib_path.split("\\")[-1].replace(".txt",".bib"))
-    driver.close()
+    print("File succesfully saved in: ./results/"+ f"{doc_name}_"+bib_path.split("\\")[-1].replace(".txt",".bib"))
 
 
-# In[22]:
+# In[13]:
 
-if  __name__=="__main__":
+if __name__=="__main__":
     timeout_val=100000 # for WebDriverWait (circa 1 day)
     session_type=input("Do you want to use a local .bib or to take it from overleaf? [local|overleaf]: ")
     #open selenium, log to overleaf, find the .bib file, get the file
@@ -132,11 +138,18 @@ if  __name__=="__main__":
         password= getpass.getpass("Overleaf password: ")
 
         #search for document
-        doc_name= input("Overleaf project name: ") #"Research Proposal (CS) (BACKUP)" 
+        doc_name= input("Overleaf project name(s separated by comma):  ") #"Research Proposal (CS) (BACKUP)" 
+        doc_name_list=[x.strip() for x in doc_name.split(",")]
 
         print("\nWARNING: the .bib file must be in the root directory of the Overleaf project in order to work.")
         print("\tBefore proceeding, make sure that the .bib on Overleaf is in the correct location.\n")
-        bib_path= input("Bib file name on Overleaf (.bib included): ")#"Bibliography.bib" #input
+        bib_path= input("Bib file name(s separated by  comma) on Overleaf, .bib included.\n If the bib name is the same in all projects, just insert that name: ")#"Bibliography.bib" #input
+        bib_path_list=[x.strip() for x in bib_path.split(",")]
+        #if bibs shorter then doc names, make the bibs longer
+        if len(doc_name_list)>1 and len(bib_path_list)==1:
+            print(f"Length of project name list {len(doc_name_list)} does not match with bib paths ones {len(bib_path_list)}, assuming the same bib name for all projects.")
+            bib_path_list=[x for x in [str(bib_path_list[0]+"#~#~#")*len(doc_name_list)][0].split("#~#~#") if x!=""]
+            print("New bib list: ", bib_path_list)
         print("\n")
         #take the text from .bib
         #consider only scientific plublications
@@ -178,74 +191,89 @@ if  __name__=="__main__":
         #wait for captcha
         WebDriverWait(driver,timeout=timeout_val).until(lambda d:driver.find_element(By.CLASS_NAME, "project-dash-table"))
         #-find file
-        #show all projects
-        action.scroll(0,0,0,10000)
-        action.perform()
-        action.reset_actions()
-        time.sleep(2)
-        driver.find_element(By.XPATH, "//button[@aria-label='Show 1 more projects']").click()
-        #get files refs
-        project_table=driver.find_element(By.CLASS_NAME, "project-dash-table")
-        project_names=[x.text for x in project_table.find_elements(By.CLASS_NAME,"dash-cell-name")[1:]] #TABLE WITH NO HEADER
-        project_els=[x for x in project_table.find_elements(By.CLASS_NAME,"dash-cell-name")[1:]]
-        projects_dict={x:y for x,y in zip(project_names, project_els)}
-        #get file
-        driver.get(projects_dict[doc_name].find_element(By.TAG_NAME,"a").get_attribute("href"))
-        time.sleep(4)
-
-
-        #go to .bib
-        main=WebDriverWait(driver, timeout=timeout_val).until(lambda d: driver.find_element(By.ID,"ide-body"))
-        main.click()
-        files_dict={x.text: x for x in main.find_element(By.TAG_NAME,"aside").find_element(By.TAG_NAME,"file-tree-root")                    .find_element(By.CLASS_NAME, 'file-tree-inner').find_elements(By.TAG_NAME,"*")
-                }
-
-        #select target file
-        try:
-            target_bib_file=files_dict[bib_path]
-            target_bib_file.click()
-        except KeyError:
-            print(".bib not found, try a valid path")
-            bib_path2=input("Insert a valid path or stop the program")
-            try:
-                target_bib_file=files_dict[bib_path2]
-                target_bib_file.click()
-                bib_path=bib_path2
-            except KeyError:
-                print("file not found")
-
-        #find bib text
-        bib_text_wait= WebDriverWait(driver, timeout=timeout_val).until(lambda d: driver.find_element(By.TAG_NAME, "source-editor"))
-        time.sleep(1)
-        #action.scroll(0,0,0,100000)
-        #select all text (raw txt of the editor is only that is displayed in the view)
-        action.key_down(Keys.CONTROL)
-        action.send_keys("a")
-        action.key_up(Keys.CONTROL)
-        action.perform()
-        action.reset_actions()
-        time.sleep(1)
-        #COPY TEXT
-        action.key_down(Keys.CONTROL)
-        action.send_keys("c")
-        action.key_up(Keys.CONTROL)
-        action.perform()
-        action.reset_actions()
-        time.sleep(1)
-        # GET COPIED TEXT FROM CLIPBOARD
-        win32clipboard.OpenClipboard()
-        bib_text= win32clipboard.GetClipboardData()
-        win32clipboard.EmptyClipboard()
-        win32clipboard.CloseClipboard()
-        time.sleep(1)
-        #create sub elements for the scholar queries
-        titles_to_change, authors_to_change, type_el_to_change,    bib_text_to_change, bib_text_untouched_els = get_bib_text_to_change(bib_text, target_bib_el)
-        print(f"\n{len(titles_to_change)} titles to change: ", titles_to_change)
         
-        #go to scholar
-        google_formatted_cits= google_scholar_search(driver, titles_to_change, authors_to_change, action, type_el_to_change)
-        #save results
-        save_results(google_formatted_cits, bib_path, bib_text_untouched_els)
+        for doc_name, bib_path in zip(doc_name_list, bib_path_list):
+            print("\n> FILE ", str(doc_name_list.index(doc_name)+1)+ " of "+str(len(doc_name_list))+": "+doc_name )
+            #show all projects
+            action.scroll(0,0,0,10000)
+            action.perform()
+            action.reset_actions()
+            time.sleep(2)
+            driver.find_element(By.XPATH, "//button[@aria-label='Show 1 more projects']").click()
+            #get files refs
+            project_table=driver.find_element(By.CLASS_NAME, "project-dash-table")
+            project_names=[x.text for x in project_table.find_elements(By.CLASS_NAME,"dash-cell-name")[1:]] #TABLE WITH NO HEADER
+            project_els=[x for x in project_table.find_elements(By.CLASS_NAME,"dash-cell-name")[1:]]
+            projects_dict={x:y for x,y in zip(project_names, project_els)}
+            #get file
+            driver.get(projects_dict[doc_name].find_element(By.TAG_NAME,"a").get_attribute("href"))
+            time.sleep(4)
+
+
+            #go to .bib
+            main=WebDriverWait(driver, timeout=timeout_val).until(lambda d: driver.find_element(By.ID,"ide-body"))
+            main.click()
+            files_dict={x.text: x for x in main.find_element(By.TAG_NAME,"aside").find_element(By.TAG_NAME,"file-tree-root")                        .find_element(By.CLASS_NAME, 'file-tree-inner').find_elements(By.TAG_NAME,"*")
+                    }
+
+            #select target file
+            try:
+                target_bib_file=files_dict[bib_path]
+                target_bib_file.click()
+            except KeyError:
+                print(".bib not found, try a valid path")
+                bib_path2=input("Insert a valid path or stop the program")
+                try:
+                    target_bib_file=files_dict[bib_path2]
+                    target_bib_file.click()
+                    bib_path=bib_path2
+                except KeyError:
+                    print("file not found")
+
+            #find bib text
+            bib_text_wait= WebDriverWait(driver, timeout=timeout_val).until(lambda d: driver.find_element(By.TAG_NAME, "source-editor"))
+            time.sleep(1)
+            #action.scroll(0,0,0,100000)
+            #select all text (raw txt of the editor is only that is displayed in the view)
+            action.key_down(Keys.CONTROL)
+            action.send_keys("a")
+            action.key_up(Keys.CONTROL)
+            action.perform()
+            action.reset_actions()
+            time.sleep(1)
+            #COPY TEXT
+            action.key_down(Keys.CONTROL)
+            action.send_keys("c")
+            action.key_up(Keys.CONTROL)
+            action.perform()
+            action.reset_actions()
+            time.sleep(1)
+            # GET COPIED TEXT FROM CLIPBOARD
+            win32clipboard.OpenClipboard()
+            bib_text= win32clipboard.GetClipboardData()
+            win32clipboard.EmptyClipboard()
+            win32clipboard.CloseClipboard()
+            time.sleep(1)
+            #create sub elements for the scholar queries
+            titles_to_change, authors_to_change, type_el_to_change,        bib_text_to_change, bib_text_untouched_els = get_bib_text_to_change(bib_text, target_bib_el)
+            print(f"\n{len(titles_to_change)} titles to change: ", titles_to_change)
+
+            #go to scholar
+            google_formatted_cits= google_scholar_search(driver, titles_to_change, authors_to_change, action, type_el_to_change)
+            #save results
+            save_results(google_formatted_cits, bib_path, doc_name, bib_text_untouched_els)
+            
+            if len(doc_name_list)>1: #repeat the process for other files
+                if doc_name_list.index(doc_name) == len(doc_name_list)-1: #close browser after last doc
+                    print("Closing the program")
+                    driver.close()
+                else:
+                    driver.get("https://www.overleaf.com")
+                    time.sleep(3)
+            else:
+                driver.close()
+
+            
         
     elif session_type=="local":
         #create a local input file
@@ -261,7 +289,8 @@ if  __name__=="__main__":
         
         local_session_type= input("[bib|txt]: ")    
         if local_session_type=="bib":
-            bib_path=input(f"""Insert the name of the {local_session_type} file\n(remember, it must be in 'local input files' folder and must incluide '.bib'): """)
+            bib_path_list=input(f"""Insert the name of the {local_session_type} file(s separated by comma) and\n remember, it must be in 'local input files' folder and must incluide '.bib' at the end: """)
+            bib_path_list=[x.strip() for x in bib_path_list.split(",") if x!=""]
             #consider only scientific plublications
             target_bib_el=["article","phdthesis","inproceedings"] #find for other common elements in scientific citation
             change_bib_els=input( "["+ ",".join(target_bib_el)+ "] <== These are the default tags that will be extracted from the .bib file,\n do you wish to add new ones? [y|n]")
@@ -269,51 +298,91 @@ if  __name__=="__main__":
                 new_bib_els=input("Insert a list of tags separated only by comma \n as in 'inbook,incollection,book,...': ")
                 target_bib_el.extend([x.lower().strip() for x in new_bib_els.split(",")])
                 print("\nTarget bib elements updated: ", target_bib_el)
-            
-            bib_text=""
-            with open("./local input files/"+bib_path.strip(), "r", encoding='utf-8') as oldfile:
-                bib_text=oldfile.read()
-            #create sub elements for the scholar queries
-            titles_to_change, authors_to_change, type_el_to_change,        bib_text_to_change, bib_text_untouched_els = get_bib_text_to_change(bib_text, target_bib_el)
-            print(f"\n{len(titles_to_change)} titles to change: ", titles_to_change)
-            
             #init driver
             options= webdriver.ChromeOptions()
             options.add_argument("--start-maximized")
             driver= webdriver.Chrome(options=options)
             #init action
             action= ActionChains(driver)
+            for bib_path in bib_path_list:
+                print("\n> FILE ", str(bib_path_list.index(bib_path)+1)+ " of "+str(len(bib_path_list))+": "+bib_path )
+
+                bib_text=""
+                with open("./local input files/"+bib_path.strip(), "r", encoding='utf-8') as oldfile:
+                    bib_text=oldfile.read()
+                #create sub elements for the scholar queries
+                titles_to_change, authors_to_change, type_el_to_change,            bib_text_to_change, bib_text_untouched_els = get_bib_text_to_change(bib_text, target_bib_el)
+                print(f"\n{len(titles_to_change)} titles to change: ", titles_to_change)
+
             
-            #go to scholar
-            google_formatted_cits= google_scholar_search(driver, titles_to_change, authors_to_change, action, type_el_to_change)
-            #save results
-            save_results(google_formatted_cits, bib_path, bib_text_untouched_els)
+
+                #go to scholar
+                google_formatted_cits= google_scholar_search(driver, titles_to_change, authors_to_change, action, type_el_to_change)
+                #save results
+                save_results(google_formatted_cits, bib_path, "", bib_text_untouched_els) #no doc name (need to make this explicit due to arg pos (not last))
+                
+                if len(bib_path_list)>1: #repeat the process for other files
+                    if bib_path_list.index(bib_path) == len(bib_path_list)-1: #close browser after last doc
+                        print("Closing the program")
+                        driver.close()
+                    else:
+                        continue
+                else:
+                    driver.close()
+                
                 
         elif local_session_type=="txt":
             #bib_path is actually txt_path in this
-            txt_path=input(f"""\nInsert the name of the {local_session_type} file\n(remember, it must be in 'local input files' folder and must include '.txt'"): """)
-            text_=""
-            with open("./local input files/"+ txt_path.strip(), "r", encoding='utf-8') as oldfile:
-                text_= oldfile.read()
-            
-            titles_to_collect=[x.split(";")[0] for x in text_.split("\n")]
-            authors_to_collect=[",".join(x.split(";")[1:]).replace("\\n","") for x in text_.split("\n")]
-            print(f"\n{len(titles_to_collect)} titles to collect: ", titles_to_collect)
-        
+            txt_path_list=input(f"""\nInsert the name of the {local_session_type} file(s separeted by comma)\n and remember, it must be in 'local input files' folder and must include '.txt'": """)
+            txt_path_list= [x.strip() for x in txt_path_list.split(",") if x!=""]
             #init driver
             options= webdriver.ChromeOptions()
             options.add_argument("--start-maximized")
             driver= webdriver.Chrome(options=options)
             #init action
             action= ActionChains(driver)
-            #go to scholar
-            google_formatted_cits= google_scholar_search(driver, titles_to_collect, authors_to_collect, action)
-            #save to file
-            save_results(google_formatted_cits, txt_path)
+            
+            for txt_path in txt_path_list:
+                print("\n> FILE ", str(txt_path_list.index(txt_path)+1)+ " of "+str(len(txt_path_list))+": "+txt_path )
+
+                text_=""
+                with open("./local input files/"+ txt_path.strip(), "r", encoding='utf-8') as oldfile:
+                    text_= oldfile.read()
+
+                titles_to_collect=[x.split(";")[0] for x in text_.split("\n") if x!=""]
+                authors_to_collect=[",".join(x.split(";")[1:]).replace("\\n","") for x in text_.split("\n") if x!=""]
+                print(f"\n{len(titles_to_collect)} titles to collect: ", titles_to_collect)
+                #go to scholar
+                google_formatted_cits= google_scholar_search(driver, titles_to_collect, authors_to_collect, action)
+                #save to file
+                save_results(google_formatted_cits, txt_path)
+                
+                if len(txt_path_list)>1: #repeat the process for other files
+                    if txt_path_list.index(txt_path) == len(txt_path_list)-1: #close browser after last doc
+                        print("Closing the program")
+                        driver.close()
+                    else:
+                        continue
+                elif len(txt_path_list)==1:
+                    driver.close()
+                
+                
 
         
     else:
         print("\nWrong input, closing the program. Try again with [local|overleaf]")
         time.sleep(2)
         
+
+
+    # In[ ]:
+
+
+    # Research Proposal (CS) (BACKUP),Research Proposal (AI) (BACKUP)
+
+
+    # In[ ]:
+
+
+
 
