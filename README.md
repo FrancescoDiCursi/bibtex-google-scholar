@@ -7,13 +7,11 @@
 
 - or take a **local** file, either a:
   + .bib file (as in the overleaf case)
-  + .txt file: a list on whose each lines contains the title along with the authors in the following syntax:
+  + .txt file: a list where each line contains the title along with the authors in the following syntax:
 
    ```
    title1;author1.1;author1.2;...
-   
    title2;author2.1;...
-
    ...
    ```
 ### OUTPUT
