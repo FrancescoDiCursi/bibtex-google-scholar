@@ -129,7 +129,7 @@ def save_results(google_formatted_cits, bib_path, doc_name="", bib_text_untouche
 # In[14]:
 
 
-if __main__=="__name__":
+if __name__=="__main__":
     try:
         timeout_val=100000 # for WebDriverWait (circa 1 day)
         session_type=input("Do you want to use a local .bib or to take it from overleaf? [local|overleaf]: ")
