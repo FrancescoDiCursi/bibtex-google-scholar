@@ -27,7 +27,7 @@ ______
 
 - Services hate automation, also the ethic one. <sub>(When it is done by others of course 😏)</sub>
 
-So <ins>**if you have a really long bibliography then you should stay close to the PC, doing CAPTCHAs when needed**</ins> (the longest the saddest). 
+So <ins>**if you have a really long bibliography then you should stay close to the PC, doing CAPTCHAs when needed**</ins> (usually 2 per session but it may vary for long files). 
 
 Despite this, **don't worry about time**: the script is conceived to wait (up to 1 day circa) in points in which CAPTCHAs appear and to perform a bit slowler than humans (in order not to be blocked).
 
