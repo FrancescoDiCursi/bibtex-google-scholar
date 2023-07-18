@@ -1,7 +1,7 @@
 ![read me header](https://github.com/FrancescoDiCursi/bibtex-google-scholar/blob/main/read%20me%20header.png)
 # bibtex-google-scholar
 
-💫 DESCRIPTION
+⚙️ **DESCRIPTION**
 
 ### INPUT
 - Take your hill formatted **.bib file(s) directly from Overleaf** choosing the bibTeX entries you need
@@ -21,7 +21,7 @@
 ### ESTIMATED TIME
 - ± 2 citations per minute.
 ______
-⚠️ REMIND
+⚠️ **REMIND**
 - In the case of a .bib file as input, the entries must have both the title and the author fields.
 
 - The old variable names for each entry of the .bib file will be retained meaning that, when replacing the .bib file in Overleaf, you will not have to change your references!
@@ -34,7 +34,7 @@ Despite this, **don't worry about time**: the script is conceived to wait (up to
 
 Given this, if you need an instantaneous formatter, good luck in your search and contact me if you find it 😎 
 ______
-:exclamation: REQUIREMENTS
+:exclamation: **REQUIREMENTS**
 
 In order to run the script you need to install the following libraries:
  - selenium==4.10.0
@@ -44,7 +44,7 @@ In order to run the script you need to install the following libraries:
 You will also need the correct ChromeDriver according to your Chrome version, [see the tutorial](https://sites.google.com/a/chromium.org/chromedriver/getting-started) (Getting started > Setup)
 
 ______
-:question: HOW TO USE IT:
+:question: **HOW TO USE IT**
 
 Before proceeding, if you want to use a local file, make sure that the file that you need to format is in the "local input files" folder.
 
