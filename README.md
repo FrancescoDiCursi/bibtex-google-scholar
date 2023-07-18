@@ -18,7 +18,7 @@
 - It returns a new .bib file with correct citations and also with old bib references in case of a .bib input. 
 
 ### ESTIMATED TIME
-E.g., 16 entries ≅ 8 minutes 
+- ± 2 citations per minute.
 ______
 ⚠️ REMIND
 - In the case of a .bib file as input, the entries must have both the title and the author fields.
