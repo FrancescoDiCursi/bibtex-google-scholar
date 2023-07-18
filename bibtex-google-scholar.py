@@ -149,9 +149,9 @@ if __name__=="__main__":
             bib_path_list=[x.strip() for x in bib_path.split(",")]
             #if bibs shorter then doc names, make the bibs longer
             if len(doc_name_list)>1 and len(bib_path_list)==1:
-                print(f"Length of project name list {len(doc_name_list)} does not match with bib paths ones {len(bib_path_list)}, assuming the same bib name for all projects.")
+                print(f"\nLength of project names list ({len(doc_name_list)}) does not match with the bibs one {len(bib_path_list)}, assuming the same bib name for all projects.")
                 bib_path_list=[x for x in [str(bib_path_list[0]+"#~#~#")*len(doc_name_list)][0].split("#~#~#") if x!=""]
-                print("New bib list: ", bib_path_list)
+                print("\nNew bib list: ", bib_path_list)
             print("\n")
             #take the text from .bib
             #consider only scientific plublications
@@ -223,7 +223,7 @@ if __name__=="__main__":
                     target_bib_file=files_dict[bib_path]
                     target_bib_file.click()
                 except KeyError:
-                    print(".bib not found, try a valid path")
+                    print("\n.bib not found, try a valid path")
                     bib_path2=input("Insert a valid path or stop the program")
                     try:
                         target_bib_file=files_dict[bib_path2]
@@ -267,7 +267,7 @@ if __name__=="__main__":
 
                 if len(doc_name_list)>1: #repeat the process for other files
                     if doc_name_list.index(doc_name) == len(doc_name_list)-1: #close browser after last doc
-                        print("Closing the program")
+                        print("\nClosing the program")
                         driver.close()
                     else:
                         driver.get("https://www.overleaf.com")
@@ -297,7 +297,7 @@ if __name__=="__main__":
                 target_bib_el=["article","phdthesis","inproceedings"] #find for other common elements in scientific citation
                 change_bib_els=input( "["+ ",".join(target_bib_el)+ "] <== These are the default tags that will be extracted from the .bib file,\n do you wish to add new ones? [y|n]")
                 if change_bib_els.strip()=="y":
-                    new_bib_els=input("Insert a list of tags separated only by comma \n as in 'inbook,incollection,book,...': ")
+                    new_bib_els=input("Insert a list of tags separated only by comma \nas in 'inbook,incollection,book,...': ")
                     target_bib_el.extend([x.lower().strip() for x in new_bib_els.split(",")])
                     print("\nTarget bib elements updated: ", target_bib_el)
                 #init driver
@@ -325,7 +325,7 @@ if __name__=="__main__":
 
                     if len(bib_path_list)>1: #repeat the process for other files
                         if bib_path_list.index(bib_path) == len(bib_path_list)-1: #close browser after last doc
-                            print("Closing the program")
+                            print("\nClosing the program")
                             driver.close()
                         else:
                             continue
@@ -335,7 +335,7 @@ if __name__=="__main__":
 
             elif local_session_type=="txt":
                 #bib_path is actually txt_path in this
-                txt_path_list=input(f"""\nInsert the name of the {local_session_type} file(s separeted by comma)\n and remember, it must be in 'local input files' folder and must include '.txt'": """)
+                txt_path_list=input(f"""\nInsert the name of the {local_session_type} file(s separeted by comma)\nand remember, it must be in 'local input files' folder and must include '.txt'": """)
                 txt_path_list= [x.strip() for x in txt_path_list.split(",") if x!=""]
                 #init driver
                 options= webdriver.ChromeOptions()
@@ -361,7 +361,7 @@ if __name__=="__main__":
 
                     if len(txt_path_list)>1: #repeat the process for other files
                         if txt_path_list.index(txt_path) == len(txt_path_list)-1: #close browser after last doc
-                            print("Closing the program")
+                            print("\nClosing the program")
                             driver.close()
                         else:
                             continue
