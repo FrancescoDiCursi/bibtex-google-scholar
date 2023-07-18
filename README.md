@@ -64,4 +64,4 @@ Legend:
 - LINKS = answers
 - DASHED LINK = possibility
 
-![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar-formatting/blob/main/code%20diagram.svg)
+![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar-formatting/blob/main/logic%20diagram.svg)
