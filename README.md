@@ -3,11 +3,11 @@
 💫 DESCRIPTION
 
 ### INPUT
-- Take your hill formatted .bib file **directly from Overleaf** personalizing the bibTeX tags you need
+- Take your hill formatted **.bib file(s) directly from Overleaf** personalizing the bibTeX tags you need
 
-- or take a **local** file, either a:
-  + .bib file (as in the overleaf case)
-  + .txt file: a list where each line contains the title along with the authors in the following syntax:
+- or take **local file(s)**, either a:
+  + .bib file(s) (as in the overleaf case)
+  + .txt file(s): a list where each line contains the title along with the authors in the following syntax:
 
    ```
    title1;author1.1;author1.2;...
@@ -51,7 +51,7 @@ Download the zip and extract the folder.
 
 Open the terminal in that folder and, once you have installed all the needed libraries (along with the ChromeDriver), just run the following command:  `python bibtex-google-scholar-formatting.py`
 
-Follow the questions according to your need and be carefull to insert the correct answers, otherwise the script will crash.
+Answer to the questions according to your need and be carefull to insert the correct answers, otherwise the script will crash.
 
 ______
 
