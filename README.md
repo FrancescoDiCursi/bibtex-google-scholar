@@ -3,7 +3,7 @@
 💫 DESCRIPTION
 
 ### INPUT
-- Take your hill formatted **.bib file(s) directly from Overleaf** personalizing the bibTeX tags you need
+- Take your hill formatted **.bib file(s) directly from Overleaf** choosing the bibTeX entries you need
 
 - or take **local file(s)**, either a:
   + .bib file(s) (as in the overleaf case)
