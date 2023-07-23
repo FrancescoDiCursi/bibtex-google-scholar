@@ -63,6 +63,6 @@ Legend:
 - RHOMBUS node= manual process
 - SQUARE node = file
 - LINKS = answers
-- DASHED LINK = possibility
+- DASHED LINKS = possibility
 
 ![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar/blob/main/mermaid-diagram-2023-07-23-172914.svg)
