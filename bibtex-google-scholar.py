@@ -129,6 +129,27 @@ def save_results(google_formatted_cits, bib_path, doc_name="", bib_text_untouche
 # In[21]:
 
 if __name__=="__main__":
+    name_ascii="""
+  ____  _ _     _                    _____                   _             _____      _           _            
+ |  _ \(_) |   | |                  / ____|                 | |           / ____|    | |         | |           
+ | |_) |_| |__ | |_ _____  ________| |  __  ___   ___   __ _| | ___ _____| (___   ___| |__   ___ | | __ _ _ __ 
+ |  _ <| | '_ \| __/ _ \ \/ /______| | |_ |/ _ \ / _ \ / _` | |/ _ \______\___ \ / __| '_ \ / _ \| |/ _` | '__|
+ | |_) | | |_) | ||  __/>  <       | |__| | (_) | (_) | (_| | |  __/      ____) | (__| | | | (_) | | (_| | |   
+ |____/|_|_.__/ \__\___/_/\_\       \_____|\___/ \___/ \__, |_|\___|     |_____/ \___|_| |_|\___/|_|\__,_|_|   
+                                                        __/ |                                                  
+                                                       |___/                                                   
+                                                       
+"""
+    print(name_ascii)
+    info_="""
+- (ʘ‿ʘ)╯ Created by Francesco Di Cursi
+- (⌐⊙_⊙) See the github repo at https://github.com/FrancescoDiCursi/bibtex-google-scholar
+- (ಠ_ಠ)  Suggests new implementations through github
+- (⌐■_■) Share it with anyone who hates to create bibliographies.
+
+Happy automation! \(^-^)/
+"""
+    print(info_)
     try:
         timeout_val=100000 # for WebDriverWait (circa 1 day)
         session_type=input("Where are your input files? [local|overleaf|research rabbit]: ")
