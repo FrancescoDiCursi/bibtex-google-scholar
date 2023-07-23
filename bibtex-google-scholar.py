@@ -283,9 +283,9 @@ if __name__=="__main__":
             rabbit_collections= [x.strip() for x in rabbit_collections.split(",")]
             rabbit_url="https://researchrabbitapp.com/"
 
-            print("""\nChoose if you want to save all collections in the same file:
-            - 'y': only one file will be created.
-            - 'n': a file for each collection will be created.""")
+            print("""\n Choose if you want to save all collections in the same file:
+            -'y': only one file will be created.
+            -'n': a file for each collection will be created.""")
             rabbit_merge_outputs=input("Do you want to save all collections in the same file? [y|n]:  ")
 
             options= webdriver.ChromeOptions()
@@ -335,7 +335,10 @@ if __name__=="__main__":
                 #go to scholar
                 google_formatted_cits= google_scholar_search(driver, titles_results, authors_results, action)
                 #save to file
-                rabbit_output_name= rabbit_collections[0] +f" and {len(rabbit_collections)-1} others.bib"
+                if len(rabbit_collections)>1:
+                    rabbit_output_name= f"{rabbit_collections[0]} and {len(rabbit_collections)-1} others.bib"
+                elif len(rabbit_collections)==1:
+                    rabbit_output_name= f"{rabbit_collections[0]}.bib"
                 save_results(google_formatted_cits, rabbit_output_name)
                 driver.close()
             elif rabbit_merge_outputs=="n":
@@ -473,13 +476,15 @@ if __name__=="__main__":
 
 
         else:
-            print("\nWrong input, closing the program. Try again with [local|overleaf|reasearch rabbit]")
+            print("\nWrong input, closing the program. Try again with [local|overleaf|research rabbit]")
             time.sleep(2)
     except Exception as e:
         print("\nERROR\n",e)
         print("\nSomething went wrong. Check the given answers cause some of them may be wrong.")
         print("\nClosing the program.")
         driver.close()
+
+
 
 
 
