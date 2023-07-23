@@ -278,7 +278,7 @@ if __name__=="__main__":
         elif session_type=="research rabbit":
             #retrieve a list from a ResearchRabbit collection
             rabbit_email=input("Research Rabbit email: ")
-            rabbit_pass=input("Research Rabbit password: ")
+            rabbit_pass=getpass.getpass("Research Rabbit password: ")
             rabbit_collections=input("Research Rabbit collection name(s separated by comma): ")
             rabbit_collections= [x.strip() for x in rabbit_collections.split(",")]
             rabbit_url="https://researchrabbitapp.com/"
