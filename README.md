@@ -5,7 +5,7 @@
 
 ### INPUT
 - Take your hill formatted **.bib file(s) directly from Overleaf** choosing the bibTeX entries you need
-
+- or take titles and authors from **Research Rabbit collections**
 - or take **local file(s)**, either a:
   + .bib file(s) (as in the overleaf case)
   + .txt file(s): a list where each line contains the title along with the authors in the following syntax:
