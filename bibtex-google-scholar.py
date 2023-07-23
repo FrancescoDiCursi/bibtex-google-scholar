@@ -283,10 +283,13 @@ if __name__=="__main__":
             rabbit_collections= [x.strip() for x in rabbit_collections.split(",")]
             rabbit_url="https://researchrabbitapp.com/"
 
-            print("""\n Choose if you want to save all collections in the same file:
-            -'y': only one file will be created.
-            -'n': a file for each collection will be created.""")
-            rabbit_merge_outputs=input("Do you want to save all collections in the same file? [y|n]:  ")
+            if len(rabbit_collections)>1:
+                print("""\n Choose if you want to save all collections in the same file:
+                -'y': only one file will be created.
+                -'n': a file for each collection will be created.""")
+                rabbit_merge_outputs=input("Do you want to save all collections in the same file? [y|n]:  ")
+            else:
+                rabbit_merge_outputs="y"
 
             options= webdriver.ChromeOptions()
             options.add_argument("--start-maximized")
