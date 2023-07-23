@@ -50,7 +50,7 @@ Download the zip and extract the folder.
 
 Before proceeding, if you want to use a local file, make sure that the file that you need to format is in the "local input files" folder.
 
-Open the terminal in that folder and, once you have installed all the needed libraries (along with the ChromeDriver), just run the following command:  `python bibtex-google-scholar-formatting.py`
+Open the terminal in that folder and, once you have installed all the needed libraries (along with the ChromeDriver), just run the following command:  `python bibtex-google-scholar.py`
 
 Answer to the questions according to your need and be carefull to insert the correct answers, otherwise the script will crash.
 
