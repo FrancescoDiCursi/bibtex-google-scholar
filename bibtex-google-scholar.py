@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[1]:
 
 
 from selenium import webdriver
@@ -22,7 +22,7 @@ from collections import Counter
 import win32clipboard
 
 
-# In[6]:
+# In[2]:
 
 
 def get_bib_text_to_change(bib_text, target_bib_el):
@@ -126,13 +126,12 @@ def save_results(google_formatted_cits, bib_path, doc_name="", bib_text_untouche
     print("File succesfully saved in: ./results/"+ f"{doc_name}_"+bib_path.split("\\")[-1].replace(".txt",".bib"))
 
 
-# In[14]:
-
+# In[21]:
 
 if __name__=="__main__":
     try:
         timeout_val=100000 # for WebDriverWait (circa 1 day)
-        session_type=input("Do you want to use a local .bib or to take it from overleaf? [local|overleaf]: ")
+        session_type=input("Do you want to use a local .bib or to take it from overleaf? [local|overleaf|research rabbit]: ")
         #open selenium, log to overleaf, find the .bib file, get the file
         if session_type.lower().strip()=="overleaf":
             #login inp
@@ -276,6 +275,108 @@ if __name__=="__main__":
                     driver.close()
 
 
+        elif session_type=="research rabbit":
+            #retrieve a list from a ResearchRabbit collection
+            rabbit_email=input("Research Rabbit email: ")
+            rabbit_pass=input("Research Rabbit password: ")
+            rabbit_collections=input("Research Rabbit collection name(s separated by comma): ")
+            rabbit_collections= [x.strip() for x in rabbit_collections.split(",")]
+            rabbit_url="https://researchrabbitapp.com/"
+
+            print("""\nChoose if you want to save all collections in the same file:
+            - 'y': only one file will be created.
+            - 'n': a file for each collection will be created.""")
+            rabbit_merge_outputs=input("Do you want to save all collections in the same file? [y|n]:  ")
+
+            options= webdriver.ChromeOptions()
+            options.add_argument("--start-maximized")
+            driver= webdriver.Chrome(options=options)
+            #init action
+            action= ActionChains(driver)
+            #go to Rabbit
+            driver.get(rabbit_url)
+            time.sleep(4)
+            rabbit_log_cont=driver.find_element(By.CLASS_NAME, "login-form")
+            mail_inp, pass_inp=rabbit_log_cont.find_elements(By.TAG_NAME,"input")
+            mail_inp.send_keys(rabbit_email)
+            pass_inp.send_keys(rabbit_pass)
+
+            pass_inp.send_keys(Keys.TAB)
+            pass_inp.send_keys(Keys.ENTER)
+
+            WebDriverWait(driver, timeout=timeout_val).until(lambda d: driver.find_elements(By.XPATH,"//div[@class='collection-button']"))
+
+            collections_= [x for x in driver.find_elements(By.XPATH,"//div[@class='collection-button' or (contains(@class,'is-selected') and contains(@class,'collection-button'))]")
+                        if x.text.split("\n")[0].strip() in rabbit_collections
+                        ]
+            #if y, save all collections in the same file
+            if rabbit_merge_outputs=="y":
+                # for each collection and each item get authors and paper name
+                titles_results=[]
+                authors_results=[]
+                for collection in collections_:
+                    collection.click()
+                    paper_list=WebDriverWait(driver, timeout=timeout_val).until(lambda d:driver.find_element(By.XPATH,"//ul[@class='collection-items']"))
+                    list_items=WebDriverWait(driver, timeout=timeout_val).until(lambda d:paper_list.find_elements(By.TAG_NAME,"li"))
+                    for item in list_items:
+                        #expand authors if expansion button
+                        try:
+                            item.find_element(By.CLASS_NAME,"toggle-expansion-button").click()
+                        except:
+                            print("no author expansion button")
+                        #get authors
+                        authors= ",".join([x.text for x in item.find_elements(By.CLASS_NAME,"author")])
+                        title= item.find_element(By.CLASS_NAME,"title").text
+                        titles_results.append(title)
+                        authors_results.append(authors)
+                        time.sleep(1)
+                    time.sleep(1)
+
+                #go to scholar
+                google_formatted_cits= google_scholar_search(driver, titles_results, authors_results, action)
+                #save to file
+                rabbit_output_name= rabbit_collections[0] +f" and {len(rabbit_collections)-1} others.bib"
+                save_results(google_formatted_cits, rabbit_output_name)
+                driver.close()
+            elif rabbit_merge_outputs=="n":
+                # for each collection and each item get authors and paper name
+                titles_results_per_file=[]
+                authors_results_per_file=[]
+                for collection in collections_:
+                    titles_results=[]
+                    authors_results=[]
+
+                    collection.click()
+                    paper_list=WebDriverWait(driver, timeout=timeout_val).until(lambda d:driver.find_element(By.XPATH,"//ul[@class='collection-items']"))
+                    list_items=WebDriverWait(driver, timeout=timeout_val).until(lambda d:paper_list.find_elements(By.TAG_NAME,"li"))
+                    for item in list_items:
+                        #expand authors if expansion button
+                        try:
+                            item.find_element(By.CLASS_NAME,"toggle-expansion-button").click()
+                        except:
+                            print("no author expansion button")
+                        #get authors
+                        authors= ",".join([x.text for x in item.find_elements(By.CLASS_NAME,"author")])
+                        title= item.find_element(By.CLASS_NAME,"title").text
+                        titles_results.append(title)
+                        authors_results.append(authors)
+                        time.sleep(1)
+                    titles_results_per_file.append(titles_results)
+                    authors_results_per_file.append(authors_results)
+                    time.sleep(1)
+
+                #search and save for each file
+                for i,collection in enumerate(rabbit_collections):
+                    print("Collection number " + str(i+1)+ ": "+collection)
+                    target_titles= titles_results_per_file[i]
+                    target_authors= authors_results_per_file[i]
+                    #go to scholar
+                    google_formatted_cits= google_scholar_search(driver, target_titles, target_authors, action)
+                    #save to file
+                    rabbit_output_name= collection+".bib"
+                    save_results(google_formatted_cits, rabbit_output_name)
+                driver.close()
+
 
         elif session_type=="local":
             #create a local input file
@@ -379,7 +480,6 @@ if __name__=="__main__":
         print("\nSomething went wrong. Check the given answers cause some of them may be wrong.")
         print("\nClosing the program.")
         driver.close()
-
 
 
 
