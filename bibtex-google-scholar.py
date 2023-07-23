@@ -473,7 +473,7 @@ if __name__=="__main__":
 
 
         else:
-            print("\nWrong input, closing the program. Try again with [local|overleaf]")
+            print("\nWrong input, closing the program. Try again with [local|overleaf|reasearch rabbit]")
             time.sleep(2)
     except Exception as e:
         print("\nERROR\n",e)
