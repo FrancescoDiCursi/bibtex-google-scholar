@@ -131,7 +131,7 @@ def save_results(google_formatted_cits, bib_path, doc_name="", bib_text_untouche
 if __name__=="__main__":
     try:
         timeout_val=100000 # for WebDriverWait (circa 1 day)
-        session_type=input("Where are your files? [local|overleaf|research rabbit]: ")
+        session_type=input("Where are your input files? [local|overleaf|research rabbit]: ")
         #open selenium, log to overleaf, find the .bib file, get the file
         if session_type.lower().strip()=="overleaf":
             #login inp
