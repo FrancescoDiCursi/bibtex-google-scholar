@@ -65,4 +65,4 @@ Legend:
 - LINKS = answers
 - DASHED LINK = possibility
 
-![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar-formatting/blob/main/logic%20diagram.svg)
+![Logic diagram](https://github.com/FrancescoDiCursi/bibtex-google-scholar/blob/main/mermaid-diagram-2023-07-23-172914.svg)
