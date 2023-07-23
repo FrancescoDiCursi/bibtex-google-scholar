@@ -143,9 +143,9 @@ if __name__=="__main__":
     print(name_ascii)
     info_="""
 - (ʘ‿ʘ)╯ Created by Francesco Di Cursi
-- (⌐⊙_⊙) See the github repo at https://github.com/FrancescoDiCursi/bibtex-google-scholar
-- (ಠ_ಠ)  Suggests new implementations through github
-- (⌐■_■) Share it with anyone who hates to create bibliographies.
+- (⌐⊙_⊙) See the GitHub repo at https://github.com/FrancescoDiCursi/bibtex-google-scholar
+- (ಠ_ಠ)  Suggests new implementations through GitHub
+- (⌐■_■) Share it with anyone who hates to create bibliographies
 
 Happy automation! \(^-^)/
 """
