@@ -52,7 +52,7 @@ Before proceeding, if you want to use a local file, make sure that the file that
 
 Open the terminal in that folder and, once you have installed all the needed libraries (along with the ChromeDriver), just run the following command:  `python bibtex-google-scholar.py`
 
-Answer to the questions according to your need and be carefull to insert the correct answers, otherwise the script will crash.
+Answer to the questions according to your need and be careful to insert the correct answers, otherwise the script will crash.
 
 ______
 
