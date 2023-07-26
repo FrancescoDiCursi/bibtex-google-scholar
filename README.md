@@ -2,6 +2,7 @@
 # bibtex-google-scholar
 
 ⚙️ **DESCRIPTION**
+
 ![terminal](https://github.com/FrancescoDiCursi/bibtex-google-scholar/blob/main/terminal_preview.png)
 
 ### INPUT
