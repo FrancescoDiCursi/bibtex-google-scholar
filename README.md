@@ -3,6 +3,8 @@
 
 ⚙️ **DESCRIPTION**
 
+![terminal](https://github.com/FrancescoDiCursi/bibtex-google-scholar/blob/main/terminal_preview.png)
+
 ### INPUT
 - Take your hill formatted **.bib file(s) from Overleaf** choosing the bibTeX entries you need
 - or take titles and authors from **Research Rabbit collections**
