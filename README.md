@@ -1,5 +1,6 @@
-![read me header](https://github.com/FrancescoDiCursi/bibtex-google-scholar/blob/main/read%20me%20header.png)
 # bibtex-google-scholar
+![read me header](https://github.com/FrancescoDiCursi/bibtex-google-scholar/blob/main/read%20me%20header%20-%20social%20preview.png)
+
 
 ⚙️ **DESCRIPTION**
 
